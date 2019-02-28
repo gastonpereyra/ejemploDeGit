@@ -136,6 +136,16 @@ Se ve identificador, las referencias (Head, branches), y el mensaje del commit.
 
 Se ve en forma de grafo, arbol, las ramificaciones y merges.
 
+## Moverse entre los commits
+
+Para poder ir a otros commits anteriores o posteriores se usa
+
+`git checkout [identificador del commit]`
+
+Tambien se puede usar para moverse hacia una rama, o etiqueta.
+
+Pero si no estamos sobre una la cabecera de una rama los cambios guardados se perderan.
+
 ## Etiquetas
 
 Para agregar una etiqueta, otro marcardor en el Tree. (usado en general para marcar versiones). Ya sea en la posicion actual o en un commit pasado.
@@ -198,3 +208,57 @@ git push [alias] [etiqueta]
 git push [alias] --tags
 git push origin --tags
 ```
+
+Se puede borrar una rama
+
+` git branch -d [nombre]`
+
+<img src="https://github.com/gastonpereyra/apuntes/blob/master/images/arbol-sin-merge.png">
+
+## Merge
+
+Sirve para fusionar 2 ramas. Para eso se usa:
+
+`git merge [nombre]`
+
+### Union Lineal
+
+Si tenemos 2 ramas, la principal y la secundaria, la secundaria avanza y una vez estando seguros que esta todo bien queremos que la principal tmb avance, nos posamos sobre la principal y hacemos merge con la secundaria. Entonces la rama principal hace un fast-forward.
+
+```
+$ git checkout master
+$ git merge dev
+Updating f42c576..3a0874c
+Fast-forward
+```
+
+<img src="https://github.com/gastonpereyra/apuntes/blob/master/images/arbol-con-merge-lineal.png">
+
+### Union no-lineal
+
+Si tenemos muchas ramas que se diverficaron, se pueden usar varios tipos de estrategias para que converjan. 
+
+* Recursión, nos situamos en la rama principal y le decimos que una (merge) con la rama que queres, esto crea una nueva instancia superior a ambas.
+
+```
+$ git checkout master
+Switched to branch 'master'
+$ git merge dev -m "Unir 2 ramas"
+Merge made by the 'recursive' strategy.
+```
+
+* Rebase, la estrategia del rebase es convertir las bifurcaciones en uniones lineales, nos situamos en la rama secundaria, y hacemos el rebase con la rama principal, luego hacemos una union lineal.
+
+```
+git rebase [rama]
+git checkout dev
+git rebase master
+git checkout master
+git merge dev
+```
+
+<img src="https://github.com/gastonpereyra/apuntes/blob/master/images/arbol-con-merge-recursivo.png">
+
+### Ramas Remotas
+
+Se pueden configurar para pushear a un repo remoto de la misma manera que la rama principal
