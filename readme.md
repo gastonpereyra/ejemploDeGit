@@ -190,3 +190,11 @@ Para unir el repo local con el remoto
 git push [alias] [branch]
 git push origin master
 ```
+
+Para subir al remoto las etiquetas
+
+``` 
+git push [alias] [etiqueta]
+git push [alias] --tags
+git push origin --tags
+```
