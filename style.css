@@ -4,7 +4,7 @@
     width: 0.4em; 
     box-sizing: content-box; 
     height: 0.4em; 
-    border: 0.1em solid red; 
+    border: 0.1em solid midnightblue; 
     position: relative; 
     border-radius: 0.35em; 
 }
@@ -15,14 +15,14 @@
     right: -0.25em; 
     bottom: -0.1em; 
     border-width: 0; 
-    background: red; 
+    background: midnightblue; 
     width: 0.35em; 
     height: 0.08em; 
     transform: rotate(45deg); 
 }
 
 #base { 
-    background: red; 
+    background: dimgray; 
     display: inline-block; 
     height: 55px; 
     margin-left: 20px; 
@@ -31,7 +31,7 @@
     width: 100px; 
 } 
 #base:before { 
-    border-bottom: 35px solid red; 
+    border-bottom: 35px solid dimgray; 
     border-left: 50px solid transparent; 
     border-right: 50px solid transparent; 
     content: ""; 
