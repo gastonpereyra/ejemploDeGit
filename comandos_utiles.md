@@ -207,6 +207,23 @@ git push [alias] [etiqueta]
 git push [alias] --tags
 git push origin --tags
 ```
+- - - -
+
+### Branches
+
+Para no afectar los cambios en todo el proyecto se pueden crear ramas, branches, donde los cambios no afectar al resto.
+
+Para crear una nueva rama en el nodo actual.
+
+`git branch [nombre]`
+
+También se puede hacer con
+
+`git checkout -b [nombre]`
+
+En este caso no solo creamos la nueva rama sino que ademas la seleccionamos para avanzar sobre ella
+
+Cada avance, en cada rama, recorrerá su propio camino no afectando al resto.
 
 Se puede borrar una rama
 
@@ -257,6 +274,18 @@ git merge dev
 ```
 
 <img src="https://github.com/gastonpereyra/ejemploDeGit/blob/master/imagenes/arbol-con-merge-recursivo.png">
+
+* Rebase, la estrategia del rebase es convertir las bifurcaciones en uniones lineales, nos situamos en la rama secundaria, y hacemos el rebase con la rama principal, luego hacemos una union lineal.
+
+```
+git rebase [rama]
+git checkout dev
+git rebase master
+git checkout master
+git merge dev
+```
+
+<img src="https://github.com/gastonpereyra/apuntes/blob/master/images/arbol-con-merge-rebase.png">
 
 ### Ramas Remotas
 

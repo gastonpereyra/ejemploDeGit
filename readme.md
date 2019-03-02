@@ -25,6 +25,37 @@ Aca para configurar la SSH para usarlo con github
 
 O buscar donde quieran como hacerlo, no es dificil
 
+
+## Contenido
+
+* Empezando
+    * Clonar
+    * Init
+    * Configurar Usuario local
+    * Configurar Repositorio Remoto
+* Modificando cosas
+    * WD / SA
+    * Status
+* Add
+* Commit
+* Log
+    * Graph
+* Checkout Commits
+* Push
+    * Push -u
+* Etiquetas
+* Ramas
+* Checkout Ramas y Etiquetas
+* Merge
+    * Fast-forward
+    * Recursivo
+    * Rebase
+* Volver atras
+    * Revert
+    * Reset
+* Fork
+* Pull Request
+
 ## Empezando
 
 Hay varias maneras de empezar
@@ -173,11 +204,306 @@ Si solo pones "git commit" inicia el editor, que puede ser un dolor de cabeza si
 
 Asi esta guardado.
 
+<img src="https://github.com/gastonpereyra/ejemploDeGit/blob/master/imagenes/add_commit_nuevo.png">
+
+
 ### Guardar modificaciones
 
-Si ya tenias guardado un archivo y lo modificas, hay una forma facil de volverlo a guardar
+Si ya tenias guardado un archivo y lo modificas, hay una forma facil de volverlo a guardar. Digamos que agregue contenido a index.hmtl
 
 ```
-# git commit -am []
+# git commit -am [mensaje]
+git commit -am "agregar contenido a index"
 ```
 
+### De a Muchos
+
+Con `git add ` se pueden agregar de a muchos archivos, no solo de a uno, usando patrones o bien `git add .` para agregar todos. Y luego hacer un commit en general.
+
+Digamos que creamos mas archivos `contact.html`, `info.html`, `style.css`, `script.js`.
+
+Entonces podemos hacer:
+
+```
+# Guardar los HTML
+git add *.html
+git commit -m "Crear info y contact"
+
+# guardar el resto
+git add .
+git commit -m "agregar archivo CSS y JS"
+```
+
+## Ver los cambios
+
+Con `git log` o mejor con `git log --oneline --graph --all` se pueden ver el historial de cambios y los identificadores de los commits (los 4 primeros numeros sirven para por ejemplo ir de un lado a otro)
+
+<img src="https://github.com/gastonpereyra/ejemploDeGit/blob/master/imagenes/arbol-sin-merge.png">
+
+## Moverte entre commits
+
+Con el identificador podes moverte entre un commit y otro usando
+
+```
+# git checkout [identificador]
+# Ir al commit cuyo primeros 4 caracteres de identificacion son 39ab
+git checkout 39ab 
+```
+
+Eso si como nos va a estar parado en ninguna rama, hacer un cambio aca se puede perder a futuro.
+
+## Subir a un repo remoto
+
+Es tan simple como 
+
+```
+# git push [alias] [rama]
+git push -u origin master
+```
+
+Ese `-u` se puede poner la primera vez, y es para que desde ahora se acuerdo que cada push a origin corresponde a la rama master. Entonces la proxima vez basta con hacer `git push origin`
+
+- - - 
+
+Esto es lo basico.
+
+Pero vamos a lo importante.
+
+## Version estable
+
+Si tu programa llega a un punto de version estable, podes usar **tags** para darle una marcación especial
+
+Se crean asi:
+
+```
+# git tag -a [nombre] -m [mensaje]
+# Crear un tag en la posición actual
+git tag -a v1.0.0 -m "Version Estable"
+
+# git tag -a [nombre] -m [mensaje] [identificado de commit]
+# crear un tag en un commit en particular
+git tag -a v1.0.0-beta -m "Version Beta" 39ab
+
+```
+
+De esta manera siempre podes volver a una version estable. Ya que no se mueve.
+
+Y para subirlo al repo hay que hacer
+
+```
+# git push [alias] [nombre de tag]
+git push origin v1.0.0
+
+# para subir todos los tags de una
+# git push [alias] --tags
+git push origin --tags
+
+```
+
+## Ramas
+
+Esto es escencial, tener varias ramas sirve para que por ejemplo:
+
+- dejas una rama principal (master) con codigo que anda bien y funciona
+- usas ramas secundarias para modificar ciertas partes, y cuando estas funcionan bien, la unis o a otras ramas secundarias, o a la principal. Asi podes tener una rama de Desarrollo, y una de Produccion, la de Produccion es el programa que distribuye al publico y el desarrollo es la que usa el equipo para mejorar el programa.
+- trabajar en equipo, todos suben a un repositorio central, pero cada uno trabaja en una rama separada para no afectar el trabajo del otro.
+
+Se crean facil
+
+```
+# git branch [nombre]
+
+# abrimos ramas para modificar el archivo contact
+git branch contact
+
+# abrimos ramas para modificar el archivo info
+git branch info
+
+# abrimos ramas para modificar el archivo css
+git branch css
+```
+
+### Moverse Entre ramas y etiquestas
+
+Para ir de una rama a otra o a una etiqueta, es como moverse entre commits
+
+```
+# git checkout [nombre]
+# vamos a contact
+git checkout contact
+```
+
+Hacemos git status y vemos que dice que estamos en contact
+
+### Modificar las ramas
+
+Podemos hacer las modificaciones de archivos que queramoas en cada rama, y al cambiar vemos que para las otras ramas es como si eso no pasara. Asi cuando nos equivocamos no rompemos todo.
+
+Eso si, cuidado con modificar en 2 ramas diferentes el mismo archivo, cuando las queramos unir va a lanzar problemas y hasta que no resolvamos no va a dejar avanzar (por ejemplo haciendo un commit nuevo en el archivo con problemas con una nueva version del mismo).
+
+Digamos que en nuestro caso modicamos el archivo contact en la rama de su nombre (que ya estabamos)
+
+```
+# en la rama contact
+# modificamos y guardamos
+git commit -am "Modificamos Contact"
+```
+
+Vamos a la rama info y modificamos info.html
+
+```
+# vamos a la rama antes de modificarlo
+git cheackout info
+# modicamos el archivo
+# guardamos
+git commit -am "Modificamos info"
+```
+
+Lo mismo con Style.css
+
+```
+# vamos a la rama antes de modificarlo
+git cheackout css
+# modicamos el archivo style.css
+# guardamos
+git commit -am "Modificamos style.css"
+```
+
+Si hacemos un `git log --oneline --graph --all`
+
+<img src="https://github.com/gastonpereyra/ejemploDeGit/blob/master/imagenes/arbol-sin-merge.png">
+
+## Unir ramas
+
+Esto es un tema largo. Es facil pero hay varias formas.
+
+### Fast-Forward
+
+Es la facil, esto pasa cuando por ejemplo la rama principal quedo atras, y avanzamos en una secundaria.
+
+```
+# git merge [rama]
+# vamos a la que esta atras
+git checkout master
+# le decimos que avance por la rama CSS
+git merge css 
+```
+
+Asi no hay problemas solo cambia la referencia.
+
+<img src="https://github.com/gastonpereyra/ejemploDeGit/blob/master/imagenes/arbol-con-merge-lineal.png">
+
+### Recursiva
+
+En este caso tenemos varias ramas que tomaron caminos diferentes, no hay 1 que este atras, entonces hay que unir las ramas y todos los archivos casi 1 a 1, pero eso git lo hace automaticamente. Y chequea se hay errores, por ejemplo que las 2 modificaran el mismo archivo. Pero si no pasa nada, crea un commit nuevo, y las 2 ramas van hacia ese commit
+
+```
+# git merge [rama] -m [mensaje]
+# vamos a la principal
+git checkout master
+# le decimos que avance por la rama info
+git merge info -m "Unir 2 ramas"
+```
+
+<img src="https://github.com/gastonpereyra/ejemploDeGit/blob/master/imagenes/arbol-con-merge-recursivo.png">
+
+### Reformulando.. gira a ..
+
+También en el caso anterior se puede simular que siempre tuvimos el caso de una lineal. Hay un comando especial para esto, y lo que hace es poner el primer commit de una rama(1) como el siguiente de la rama(2), y luego se avanza con un merge lineal.
+
+```
+# git rebase [rama]
+
+# vamos a la rama que queremos poner "adelante"
+git checkout contact
+
+# hacemos rebase con la rama que queremos que quede "atras" (en general la principal)
+git rebase master
+
+# Vamos a la que quedo atras
+git checkout master
+
+# Avanzamos hacia la que esta "adelante"
+git merge contact
+```
+
+<img src="https://github.com/gastonpereyra/apuntes/blob/master/images/arbol-con-merge-rebase.png">
+
+### Actualicemos el repo
+
+Creemos una nueva etiqueta
+
+`git tag -a v1.1.0 -m "Nueva Version"` 
+
+Y actualizamos el repo
+
+`git push origin`
+
+TAMBIËN, se puede "pushear" cada rama al repo remoto y otro dia hacer todo esto de merge, digamos que creamos un alias para las ramas `git push -u devContact contact` (y asi con todas, repito crear los alias antes).
+
+Y subimos los tags
+
+`git push origin --tags`
+
+- - - -
+
+## Fetch y Pull
+
+Digamos que pasan los dias y queremos ver si alguien estuvo modificando el repo 
+
+`git fetch origin`
+
+Aca git se fija si nuestro repositorio en la maquina es el mismo que en el remoto, pero ojo no lo actualiza de entrada para eso
+
+`git pull origin`
+
+Es bueno hacerlo antes de empezar a modificar, si trabajamos con otros
+
+- - - -
+
+## Hay una mosca en mi repo
+
+Digamos que rompimos todo.
+
+* Si usamos ramas, es un alivio porque si algo pasa en una rama que no es la principal no jodimos a los que usan nuestro programa.
+* Si usamos etiquetas, lo que distribuimos son las versiones de las etiquetas, y de ultimo el codigo principal lo podemos volver a una de ellas.
+
+Hay formas de **volver atras**
+
+### Revert
+
+Podemos usar REVERT, lo que hace revert es crear un commit nuevo usando el estado de un commit viejo. Entonces no elimina el historial de cambios, y eso hace que si trabajamos con un repo remoto no le genere lios al resto. 
+
+`git revert [id del commit al cual queremos volver] -m [mensaje]`
+
+### Reset
+
+Otra forma son los reset, aca volvemos atras en el historial, todos los commits que vamos volviendo van desapareciendo o juntandose (segun la opcion).
+
+* soft: `git reset --soft [identificador]` | vuelve al commit [identificador] pero no borra nada, deja todo como estaba listo para commitear.
+* mixed: `git reset --mixed [identificador]` | vuelve al commit [identificador] pero no borra nada, y deja no esta en en Stage Area.
+* hard: `git reset --hard [identificador]` | vuelve al commit [identificador] en el estado en el que estaba el commit en ese tiempo.
+
+### Recapitulando
+
+Si le erraste podes hacer alguna de estas cosas para volver a un lugar seguro y arreglarlo. Eso si siempre usa status para fijarte que estes sobre una rama, y que esta en el SA, que no esta siendo seguido y cosas asi.
+
+- - - -
+
+## FORK
+
+Fork es cuando copias un proyecto de otro repositorio al tuyo y poder modificarlo como quieras, pero guarda una referencia a ese repo original.
+
+Aca es mas facil usarlo en la interfaz de la pagina de Github, es un boton arriba a la derecha.
+
+## PULL REQUEST
+
+Pull request se puede usar para actualizar tu fork, y para sugerir cambios al repositorio original.
+
+Si hacemos una modificación en nuestro repo (forkeado) y apretamos el boton de "pull request" en la pagina de github (devuelta es mas facil asi), hace una serie de chequeos, te pide de dejar un comentario (sino es automatico) y envia la petición, y el dueño del repo original se encarga de aceptar o no, hacerle modificaciones o lo que crea conveniente, si te acepta te convertis en **colaborador**. 
+
+En esos chequeos que hace, se fija que este todo al dia, y si no lo une, hace un "merge", por esa razón si haces un **pull request vacio** (osea sin modificaciones) lo unico que hace es actualizar tu repo local. No hace falta pedir permiso ni nada.
+
+## Hecho Por Gastón Pereyra
+
+Cualquier sugerencia, cambios o correciones avisar.
