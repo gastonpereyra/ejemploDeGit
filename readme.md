@@ -191,7 +191,7 @@ git add index.html
 
 Y con `git status` se ve algo aasi:
 
-<img src="https://github.com/gastonpereyra/ejemploDeGit/blob/master/imagenes/status-SA.png">
+<img src="https://github.com/gastonpereyra/ejemploDeGit/blob/master/imagenes/status_SA.png">
 
 ### Guardar los cambios
 
