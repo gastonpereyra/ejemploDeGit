@@ -25,6 +25,8 @@ Aca para configurar la SSH para usarlo con github
 
 O buscar donde quieran como hacerlo, no es dificil
 
+(Mas Info de los comandos)[https://github.com/gastonpereyra/ejemploDeGit/blob/master/comandos_utiles.md]
+
 
 ## Contenido
 
