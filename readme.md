@@ -3,262 +3,181 @@
 
 <img src="https://git-scm.com/images/logo@2x.png">
 
+## Antes de Empezar
 
-[Guia](https://git-scm.com/book/en/v2)
+Tener en cuenta Git no es Github, y Github usa Git.Esto quiere decir que podes usar Git sin usar Github.
 
-## Configuración inicial
+Github, Gitlab, Bitbucket y otras son **Repositorios Remotos**, Tienen Interfaces graficas que ayudan mucho al manejo simple de los mismos.
 
-Para guardar los cambios es necesario registrar un nombre de usuario y un email.
+PERO si bien en estos se pueden hacer muchas cosas equivalentes a los comandos en GIT, no es posible hacer TODO lo que se quiere. Para eso se necesitan herramientas adicionales, por ejemplo Github provee de Github desktop, que es una interfaz grafica para usar Git de manera local en las maquina propias, y resolver algunas problemas por ejemplo volver a versiones previas.
 
-Puede ser "local" (default) para el proyecto, "global" para el usuario del SO, y "system" para todos los usuarios.
+Por esta razón lo que voy a explicar a continución es para usar GIT, en la consola de comandos, y asi poder usarlo para cualquier repo remoto, o local, en cualquier lado.
 
-```git
-git config --local user.name "Gaston"
-git config --local user.email "unMail@correo.com"
+Otra cosa, tienen que tener instalado GIT en sus maquinas, si no lo tienen pueden fijarse como hacerlo, es simple
+
+Aca les dice los pasos segun el SO
+
+<https://git-scm.com/book/es/v1/Empezando-Instalando-Git>
+
+Aca para configurar la SSH para usarlo con github
+
+<http://www.webtutoriales.com/articulos/configurar-git-para-trabajar-con-github>
+
+O buscar donde quieran como hacerlo, no es dificil
+
+## Empezando
+
+Hay varias maneras de empezar
+
+Van al repo remoto, por ejemplo Github, y en sus cuentas crean un nuevo repositorio
+
+<img src="https://github.com/gastonpereyra/ejemploDeGit/blob/master/imagenes/github-repoNuevo.png">
+
+Le ponen un nombre, no le acepten que se les cree un readme.md, publico o privado elección de uds. Aceptan y ven algo asi:
+
+<img src="https://github.com/gastonpereyra/ejemploDeGit/blob/master/imagenes/github-repoCreado.png">
+
+Ahi les da toda la info necesaria.
+
+Arriba les da la dirección para del repo, incluso da lineas de comando para ni siquiera tener que pensar.
+
+### Opcion 1 - Clonar
+
+La mas facil talves. Van a la carpeta donde quieren que ESTE LA CARPETA del repositorio. Digamos al directorio padre.
+
+```
+git clone [direcion del repo]
+```
+
+Y asi crea una nueva carpeta con el nombre del repositorio, trae el contenido del repositorio, lo copia y queda listo para usar. Tiene configurado donde esta el remoto, y otro monton de cosas. Esto funciona tanto si esta vacio o es un proyecto empezado hace rato. Pero habra cosas a configurar si no estan ya hechas como el usuario (que lo vemos a continuación)
+
+### Opcion 2 - Inicio Manual
+
+Aca creamos la carpeta donde vamos a trabajar, y ponemos
+
+```
+git init
+```
+
+Fin.
+
+No mentira, asi iniciamos pero no tiene nada, la configuramos un poco. 
+
+Si cuando instalamos Git en nuestras maquinas no lo hicimos podemos configurar de todo, desde nuestros nombres a que editor usar. Pero el nombre y el email son obligatorios, sino no es posible hacer la gran mayoria de cosas.
+
+#### Configurar Usuario
+
+Simple, no hace falta que sea una cuenta en ningun lado, solo datos en lo posible reales para que si es necesario alguien te contacte.
+
+```
+git config [scope] user.name "[nombre]"
+git config [scope] user.email "[email]"
+```
+
+Que es scope ? a que ambito pertenece el usuario, y esto se debe a que si estan en una pc compartida pueden no querer dejar que su usuario lo use todo el mundo. Hay 3 tipos
+    - `--local`, por defecto (si no ponen nada) que es solo para el proyecto, afuera de la carpeta no es posible usarlo
+    - `--global`, es para toda la sesion del SO, por lo que se puede seguir usando en otras carpetas
+    - `--system`, es para todo el SO, es decir que si el SO tiene varios usuarios todos pueden o van a usar el mismo nombre y email para Git.
+
+Ejemplo:
+
+```
 git config --global user.name "Gaston"
-git config --global user.email "unMail@correo.com"
-git config --system user.name "Gaston"
-git config --system user.email "unMail@correo.com"
+git config --global user.email "esteNoEs@miEmail.com"
 ```
 
-Se pueden configurar otro monton de cosas.
+#### Configurar Remoto
 
-Para ver lo configurado
-
-`git config --list`
-
-## Iniciar
-
-Para iniciar un repositorio, en la carpeta donde se encontrará.
-
-`git init`
-
-De esta manera esta listo para empezar a usarse, crea la carpeta `.git/` donde se guardara la configuración y los archivos.
-Crea la rama `master`.
-
-## Clonar
-
-Se puede iniciar clonando un repositorio existente, importando el estado de ese directorio.
-
-`git clone [url]`
-
-[url] = dirección del repositorio a clonar.
-
-Este pasara a ser "propiedad" del usuario local y poder modificarlo.
-
-## Cambios
-
-Si en el directorio de trabajo modificamos, agregando archivos, o modificando los mismos, git detecta esos cambios. Y la diferencias en los archivos. 
-
-Para ver el estado de estos cambios 
-
-`git status`
-
-Aporta información tanto en que archivos fueron cambiados, y no notificados, ni guardados como en que rama se esta trabajando.
-
-## Agregar al Stage
-
-Para agregar archivos al Stage y prepararlos para guardarlos se usa
-
-* Para agregar 1 archivo
-
-```
-git add [nombre de archivo]
-git add index.html 
-```
-
-* Para agregar patrones de archivos 
-
-```
-git add [patron]
-git add *.html 
-```
-
-En este caso agrega todos los archivos (que ya no estuvieran) que tengan de extensión ".html"
-
-* Para agregar todos
-
-```
-git add .
-```
-
-### Eliminar Archivos / renombrar
-
-Se usa para Eliminar
-
-`git rm [archivo, patron o directorio]`
-
-Para renombrar
-
-`git mv [archivo] [nuevo nombre]`
-
-### Sacar del Stage
-
-PAra sacar del Stage 
-
-`git reset HEAD <archivo>`
-
-## Guardar cambios
-
-Para guardar los cambios en el repositorio
-
-`git commit`
-
-Esto lleva a un editor (que se puede configurar previamente). 
-
-La manera recomendada:
-
-`git commit -m "[mensaje]"`
-
-Si se creo un archivo y es la primera vez que lo vamos a guardar esta es la forma. Pero si ya tuvo otros commits se puede evitar el paso de agregar asi:
-
-`git commit -am "[mensaje]"`
-
-Si se agrega `-v` se agrega al commit las diferencias en los archivos
-
-## Ver Historial de cambios
-
-Para ver el historial de commits
-
-`git log`
-
-Se muestra los commits, su identificador, quien los hizo, timestamp y la referencias.
-
-Para verlo comprimido
-
-`git log --oneline`
-
-Se ve identificador, las referencias (Head, branches), y el mensaje del commit.
-
-`git log --oneline --graph`
-
-`git log --oneline --graph --all`
-
-Se ve en forma de grafo, arbol, las ramificaciones y merges.
-
-## Moverse entre los commits
-
-Para poder ir a otros commits anteriores o posteriores se usa
-
-`git checkout [identificador del commit]`
-
-Tambien se puede usar para moverse hacia una rama, o etiqueta.
-
-Pero si no estamos sobre una la cabecera de una rama los cambios guardados se perderan.
-
-## Etiquetas
-
-Para agregar una etiqueta, otro marcardor en el Tree. (usado en general para marcar versiones). Ya sea en la posicion actual o en un commit pasado.
-
-```
-git tag -a [nombre] -m [mensaje]
-git tag -a [nombre] -m [mensaje] [identificado de commit]
-git tag -a v1.0.0 -m "Version Estable"
-```
-
-Para ver las etiquetas
-
-`git tag`
-
-Para buscar versiones
-
-`git tag -l [nombre o patron]`
-
-## Agregar Remoto
-
-Para agregar un repo remoto se necesita un alias y una url, en general la rama principal (master) va con el alias origin
+Para poder subir a Github o cualquiera hay que indicar a Git a donde hay que subir los archivos. Esto se hace asi:
 
 ```
 git remote add [alias] [url]
+
+# Ejemplo
+
 git remote origin http:github.com/esejemplo/ejemplo1.git
 ```
-Para ver los remotos
 
-`git remote -v`
+ALIAS, es un nombre de fantasia para asociar la URL, asi no hay que escribir todo el tiempo tanto. SE pueden poner la cantidad de Alias que se quieran incluso a la misma URL, esto es para usar las ramas.
 
-Para ver los datos del remoto
+"origin" es el nombre mas comun para el repositorio principal , para usar la rama principal, si clonan uno desde github se llama asi.
 
-`git remote show [nombre]`
+### Listo ?
 
-## Fetch
+Una vez hecho lo anterior, aparece una carpeta ".git" (que es oculta), donde Git guarda todo su manejo interno (que es para otro tema), es importante no tocarlo si no sabes bien que haces.
 
-Para recuperar la información del remoto y traerla al directorio local (sin unirla)
+Cuando creas un repo en Git, lo que haces es crear la carpeta, mas `git init` + `git remote add origin [url]`, y alojarlo en la nube.
 
-`git fetch [nombre]`
+Y asi esta listo para empezar.
 
-## Pull
+## Modificando cosas
 
-Para unir los cambios de remoto en el directorio local
+La idea de Git es ir guardando versiones de las archivos, versiones que le vamos indicando cuando guardarlas, e ir poniendo marcadores para en caso de ser necesario volver atras, crear nuevas versiones y comparar y otras muchas cosas. Por lo que este guardado **no es automatico** (salvo que estemos usando algun plugin o entorno que lo haga por nosotros como pasa en Glitch).
 
-`git pull [nombre]`
+Hay **3 areas principales** en *GIT*
+    * **WD**: Working directory, osea el area de trabajo, lo que vos estas editando, los archivos en si mismo.
+    * **SA**: Stage Area, es un lugar donde ponemos los archivos antes de confirmarlos para guardar
+    * **Commits**: (no se llama asi pero para explicarlo ahora lo voy a llamar asi), que es la confirmación para guardar el archivo, aca git guarda una "foto" del archivo o los archivos, y le asigna un identificador (un codigo en SHA-1) y queda en un **"arbol"** (osea todos los posibles caminos que se fueron guardando). Pasan mas cosas pero es para otro tema.
 
-## Push
+Otra cosa importante hay marcadores especiales que se pueden ir dejando por el arbol de git, uno es que indica donde VOS estas parado que es el **HEAD** (lo vas a ver varias veces), otro son las *ramas* (branches), siempre hay al menos 1 sino no se pueden guardar los cambios, la default es **master** (que es la principal casi siempre), se pueden crear mas, y uno puede ir de una rama a la otra (y a las versiones de lso archivos en ellas), y otro marcador son las etiquetas (**tags**), es un tipo especial no existe uno por default, hay que crearlos y sirven para crear la versiones recomendadas de tus programas, en Github aparecen en la parte de *releases*, es lo que en general nos dan como el programa v1.1.2 o la v1.1.20-beta. 
 
-Para unir el repo local con el remoto
+En fin, modificas tus archivos, creas, y borrar. Lo que necesites y llegaste a un punto que te parece correcto guardar.
 
-``` 
-git push [alias] [branch]
-git push origin master
-```
+### Verifcar estado
 
-Para subir al remoto las etiquetas
+Para verificar el estado actual de git
 
-``` 
-git push [alias] [etiqueta]
-git push [alias] --tags
-git push origin --tags
-```
+`git status`
 
-Se puede borrar una rama
+Cuando no pasa nada especial se ve asi:
 
-` git branch -d [nombre]`
+<img src="https://github.com/gastonpereyra/ejemploDeGit/blob/master/imagenes/status-vacio.png">
 
-<img src="https://github.com/gastonpereyra/apuntes/blob/master/images/arbol-sin-merge.png">
+Cuando hiciste cambios asi:
 
-## Merge
+<img src="https://github.com/gastonpereyra/ejemploDeGit/blob/master/imagenes/status-cambios.png">
 
-Sirve para fusionar 2 ramas. Para eso se usa:
+Aca te muestra en que ramas estas en **On branch **
 
-`git merge [nombre]`
+Te muestra si desde la ultima vez que reviso el repositorio esta al dia, o avanzaste o retrocediste.
 
-### Union Lineal
+Y te dice si existen archivos que ya alguna ves incluiste en el arbol de git (**not staged**) y los que nunca estuvieron (**untrecked**). Aparecen en Rojo
 
-Si tenemos 2 ramas, la principal y la secundaria, la secundaria avanza y una vez estando seguros que esta todo bien queremos que la principal tmb avance, nos posamos sobre la principal y hacemos merge con la secundaria. Entonces la rama principal hace un fast-forward.
+Ademas te muestra también si estan en el SA (**changes to be committed**). Aparecen en Verde.
 
-```
-$ git checkout master
-$ git merge dev
-Updating f42c576..3a0874c
-Fast-forward
-```
+Esto sirve para ir chequeando si tenes algo por guardar o no.
 
-<img src="https://github.com/gastonpereyra/apuntes/blob/master/images/arbol-con-merge-lineal.png">
+### Agregas archivos
 
-### Union no-lineal
-
-Si tenemos muchas ramas que se diverficaron, se pueden usar varios tipos de estrategias para que converjan. 
-
-* Recursión, nos situamos en la rama principal y le decimos que una (merge) con la rama que queres, esto crea una nueva instancia superior a ambas.
+Digamos que creas el archivo `index.html`. No le pones nada, pero lo queres dejar registrado. Para la primera vez, osea cuando creas el archivo y nunca lo guardaste en GIT si o si
 
 ```
-$ git checkout master
-Switched to branch 'master'
-$ git merge dev -m "Unir 2 ramas"
-Merge made by the 'recursive' strategy.
+# git add [nombre de archivo]
+git add index.html 
 ```
 
-* Rebase, la estrategia del rebase es convertir las bifurcaciones en uniones lineales, nos situamos en la rama secundaria, y hacemos el rebase con la rama principal, luego hacemos una union lineal.
+Y con `git status` se ve algo aasi:
+
+<img src="https://github.com/gastonpereyra/ejemploDeGit/blob/master/imagenes/status-SA.png">
+
+### Guardar los cambios
+
+Cuando lo queres guardar se usa el siguiente comando
 
 ```
-git rebase [rama]
-git checkout dev
-git rebase master
-git checkout master
-git merge dev
+# git commit -m [mensaje]
+git commit -m "agregar index.html"
 ```
 
-<img src="https://github.com/gastonpereyra/apuntes/blob/master/images/arbol-con-merge-recursivo.png">
+Si solo pones "git commit" inicia el editor, que puede ser un dolor de cabeza si no lo sabes usar o no lo configuraste para uno que si sepas.
 
-### Ramas Remotas
+Asi esta guardado.
 
-Se pueden configurar para pushear a un repo remoto de la misma manera que la rama principal
+### Guardar modificaciones
+
+Si ya tenias guardado un archivo y lo modificas, hay una forma facil de volverlo a guardar
+
+```
+# git commit -am []
+```
+

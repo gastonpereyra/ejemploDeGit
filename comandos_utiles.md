@@ -275,6 +275,25 @@ git push secundaria
 
 El `-u` se usa para que git automaticamente asocie una rama con un alias de un repo remoto. Entonces la siguiente vez de "push" solo usas el alias.
 
+- - - -
+
+### Revertir / Resetear
+
+Para volver atras por si hubo algun error hay varias formas, y muchas otras estrategias
+
+* Revertir: Cuando usas un repo remoto, donde trabajan varias personas, usas este metodo para no romper el historial de cambios, y que la gente q usa el repo remoto no tenga problemas de sincronia.
+
+`git revert [identificador] -m [mensaje] `
+
+En este caso el revert crea un nuevo commit, osea avanza, dejo todo lo que se hizo en el historial, pero el estado actual es anterior, seria como borrar a mano y commitear.
+
+* Reset: Reset es lo contrario, reset vuelve commits atras, los borra del historial. Por lo que si volves atras antes de lo que trajiste del remoto puede haber conflictos en el resto de del equipo
+    * soft: `git reset --soft [identificador]` | vuelve al commit [identificador] pero no borra nada, deja todo como estaba listo para commitear.
+    * mixed: `git reset --mixed [identificador]` | vuelve al commit [identificador] pero no borra nada, y deja no esta en en Stage Area.
+    * hard: `git reset --hard [identificador]` | vuelve al commit [identificador] en el estado en el que estaba el commit en ese tiempo.
+
+
+
 ## Para saber más
 
 [Guia](https://git-scm.com/book/en/v2)
