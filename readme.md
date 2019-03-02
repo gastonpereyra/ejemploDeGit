@@ -62,7 +62,7 @@ Hay varias maneras de empezar
 
 Van al repo remoto, por ejemplo Github, y en sus cuentas crean un nuevo repositorio
 
-<img src="https://github.com/gastonpereyra/ejemploDeGit/blob/master/imagenes/github-repoNuevo.png">
+<img src="https://github.com/gastonpereyra/ejemploDeGit/blob/master/imagenes/github-newRepo.png">
 
 Le ponen un nombre, no le acepten que se les cree un readme.md, publico o privado elección de uds. Aceptan y ven algo asi:
 
@@ -162,11 +162,11 @@ Para verificar el estado actual de git
 
 Cuando no pasa nada especial se ve asi:
 
-<img src="https://github.com/gastonpereyra/ejemploDeGit/blob/master/imagenes/status-vacio.png">
+<img src="https://github.com/gastonpereyra/ejemploDeGit/blob/master/imagenes/status_vacio.png">
 
 Cuando hiciste cambios asi:
 
-<img src="https://github.com/gastonpereyra/ejemploDeGit/blob/master/imagenes/status-cambios.png">
+<img src="https://github.com/gastonpereyra/ejemploDeGit/blob/master/imagenes/status_cambios.png">
 
 Aca te muestra en que ramas estas en **On branch **
 
